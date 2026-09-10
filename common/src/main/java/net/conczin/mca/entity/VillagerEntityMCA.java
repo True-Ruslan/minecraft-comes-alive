@@ -1599,7 +1599,7 @@ public class VillagerEntityMCA extends Villager implements VillagerLike<Villager
     public ItemStack getProjectile(ItemStack stack) {
         if (stack.getItem() instanceof ProjectileWeaponItem weapon) {
             Predicate<ItemStack> predicate = weapon instanceof CrossbowItem ? ProjectileWeaponItem.ARROW_OR_FIREWORK : weapon.getAllSupportedProjectiles();
-            ItemStack itemStack = ProjectileUtil.getMobArrow(this, stack, 1.0F, stack);
+            ItemStack itemStack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
             return itemStack.isEmpty() ? new ItemStack(Items.ARROW) : itemStack;
         } else {
             return ItemStack.EMPTY;
