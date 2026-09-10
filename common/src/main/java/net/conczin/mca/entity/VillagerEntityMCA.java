@@ -1116,7 +1116,8 @@ public class VillagerEntityMCA extends Villager implements VillagerLike<Villager
             InventoryUtils.dropAllItems(this, inventory);
         }
 
-        if (level() instanceof ServerLevel serverLevel) {
+        // A tombstone preserves this UUID for resurrection, so its Living World state still belongs to this NPC identity.
+        if (!capturedInTombstone && level() instanceof ServerLevel serverLevel) {
             NpcRemovalLifecycle.purge(serverLevel.getServer().getWorldPath(LevelResource.ROOT), getUUID());
         }
 
@@ -1176,7 +1177,7 @@ public class VillagerEntityMCA extends Villager implements VillagerLike<Villager
         if (Config.getInstance().useMCAVoices) {
             //baby sounds
             if (getAgeState() == AgeState.BABY) {
-                return SoundsMCA.VILLAGER_BABY_LAUGH;
+                return SoundsMCA.VILLAGER_BABY_LAUGH : SoundsMCA.VILLAGER_BABY_LAUGH;
             }
 
             //snoring
@@ -1200,7 +1201,7 @@ public class VillagerEntityMCA extends Villager implements VillagerLike<Villager
             }
 
             //generic mood sounds
-            Mood mood = getVillagerBrain().getMood();
+            Mood mood = mcaBrain.getMood();
             if (mood.getSoundInterval() > 0 && tickCount % mood.getSoundInterval() == 0) {
                 return getGenetics().getGender() == Gender.MALE ? mood.getSoundMale() : mood.getSoundFemale();
             }
