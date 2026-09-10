@@ -1177,7 +1177,7 @@ public class VillagerEntityMCA extends Villager implements VillagerLike<Villager
         if (Config.getInstance().useMCAVoices) {
             //baby sounds
             if (getAgeState() == AgeState.BABY) {
-                return SoundsMCA.VILLAGER_BABY_LAUGH : SoundsMCA.VILLAGER_BABY_LAUGH;
+                return SoundsMCA.VILLAGER_BABY_LAUGH;
             }
 
             //snoring
@@ -1201,7 +1201,7 @@ public class VillagerEntityMCA extends Villager implements VillagerLike<Villager
             }
 
             //generic mood sounds
-            Mood mood = mcaBrain.getMood();
+            Mood mood = getVillagerBrain().getMood();
             if (mood.getSoundInterval() > 0 && tickCount % mood.getSoundInterval() == 0) {
                 return getGenetics().getGender() == Gender.MALE ? mood.getSoundMale() : mood.getSoundFemale();
             }
@@ -1599,7 +1599,7 @@ public class VillagerEntityMCA extends Villager implements VillagerLike<Villager
     public ItemStack getProjectile(ItemStack stack) {
         if (stack.getItem() instanceof ProjectileWeaponItem weapon) {
             Predicate<ItemStack> predicate = weapon instanceof CrossbowItem ? ProjectileWeaponItem.ARROW_OR_FIREWORK : weapon.getAllSupportedProjectiles();
-            ItemStack itemStack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
+            ItemStack itemStack = ProjectileUtil.getMobArrow(this, stack, 1.0F, stack);
             return itemStack.isEmpty() ? new ItemStack(Items.ARROW) : itemStack;
         } else {
             return ItemStack.EMPTY;
